@@ -1,5 +1,5 @@
 {
-    "name": "elysia-connect",
+    "name": "elysia-connect-middleware",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "type": "module",
