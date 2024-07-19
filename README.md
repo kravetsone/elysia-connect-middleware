@@ -1,5 +1,14 @@
 # elysia-connect-middleware
 
+<div>
+
+[![npm](https://img.shields.io/npm/v/elysia-connect-middleware?logo=npm&style=flat&labelColor=000&color=3b82f6)](https://www.npmjs.org/package/elysia-connect-middleware)
+
+<!-- [![JSR](https://jsr.io/badges/@kravets/t-kassa-api)](https://jsr.io/@kravets/t-kassa-api)
+[![JSR Score](https://jsr.io/badges/@kravets/t-kassa-api/score)](https://jsr.io/@kravets/t-kassa-api) -->
+
+</div>
+
 This plugin allows you to use [`express`](https://www.npmjs.com/package/express)/[`connect`](https://www.npmjs.com/package/connect) middleware directly in Elysia!
 
 ```ts
@@ -15,6 +24,12 @@ const app = new Elysia()
         })
     )
     .get("/", "Hello, elysia-connect-middleware!");
+```
+
+#### Installation
+
+```bash
+bun install elysia-connect-middleware
 ```
 
 ### Tested middlewares

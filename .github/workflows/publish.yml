@@ -29,14 +29,14 @@ jobs:
             - name: Build
               run: bunx pkgroll
 
-            - name: Prepare to JSR publish
-              run: bun scripts/release-jsr.ts
+            # - name: Prepare to JSR publish
+            #   run: bun scripts/release-jsr.ts
 
             - name: Type-check
               run: tsc --noEmit
 
-            - name: Publish package to JSR
-              run: bunx jsr publish --allow-dirty
+            # - name: Publish package to JSR
+            #   run: bunx jsr publish --allow-dirty
 
             - name: Install Node
               uses: actions/setup-node@v4
