@@ -21,6 +21,7 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 
 	return new Elysia({
 		name: "connect",
+		seed: middlewares,
 	}).onRequest(async ({ request, set }) => {
 		// console.log(request)
 		return await new Promise<Response | undefined>((resolve) => {
