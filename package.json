@@ -1,7 +1,26 @@
 {
     "name": "elysia-connect",
-    "module": "src/index.ts",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "type": "module",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "description": "This plugin allows you to use express/connect middleware directly in Elysia!",
+    "keywords": [
+        "elysia",
+        "express",
+        "connect",
+        "middleware",
+        "plugin",
+        "elysia-plugin"
+    ],
+    "scripts": {
+        "prepublishOnly": "bunx pkgroll"
+    },
     "devDependencies": {
         "@types/bun": "latest",
         "@types/cors": "^2.8.17",
@@ -23,5 +42,8 @@
         "connect": "^3.7.0",
         "elysia": "^1.1.3",
         "node-mocks-http": "^1.15.0"
-    }
+    },
+    "files": [
+        "dist"
+    ]
 }
