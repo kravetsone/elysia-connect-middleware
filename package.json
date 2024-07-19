@@ -11,6 +11,12 @@
         }
     },
     "description": "This plugin allows you to use express/connect middleware directly in Elysia!",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kravetsone/elysia-connect-middleware"
+    },
+    "readme": "https://github.com/kravetsone/elysia-connect-middleware",
+    "homepage": "https://github.com/kravetsone/elysia-connect-middleware",
     "keywords": [
         "elysia",
         "express",
