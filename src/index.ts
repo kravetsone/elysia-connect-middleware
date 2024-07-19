@@ -1,5 +1,3 @@
-import { IncomingMessage, ServerResponse } from "node:http";
-import { Socket } from "node:net";
 import Connect from "connect";
 import { Elysia } from "elysia";
 import { createResponse } from "node-mocks-http";
@@ -9,10 +7,11 @@ import {
 	transformResponseToServerResponse,
 } from "./utils";
 
-const connectApp = Connect();
-
 export function connect(...middlewares: ConnectMiddleware[]) {
+	const connectApp = Connect();
+
 	for (const middleware of middlewares) {
+		// @ts-expect-error
 		connectApp.use(middleware);
 	}
 
@@ -23,18 +22,19 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 	return new Elysia({
 		name: "connect",
 	}).onRequest(async ({ request, set }) => {
+		// console.log(request)
 		return await new Promise<Response | undefined>((resolve) => {
 			const message = transformRequestToIncomingMessage(request);
+			// @ts-expect-error
+			message.app = connectApp;
 
 			const response = createResponse();
-
+			// console.log("SHOW", response)
 			const end = response.end;
 
 			// @ts-expect-error
 			response.end = (...args: Parameters<typeof response.end>) => {
 				const call = end.call(response, ...args);
-
-				console.log(response);
 
 				const webResponse = transformResponseToServerResponse(response);
 
@@ -47,7 +47,6 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 			connectApp.handle(message, response, () => {
 				const webResponse = transformResponseToServerResponse(response);
 				webResponse.headers.forEach((value, key) => {
-					console.log(key, value);
 					set.headers[key] = value;
 				});
 				set.status = webResponse.status;
