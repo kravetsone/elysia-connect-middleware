@@ -1,7 +1,8 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
+import type { Request, Response } from "express";
+import type { MockRequest, MockResponse } from "node-mocks-http";
 
 export type ConnectMiddleware = (
-	req: IncomingMessage,
-	res: ServerResponse,
+	req: MockRequest<Request>,
+	res: MockResponse<Response>,
 	next: (err?: any) => unknown,
 ) => unknown;
