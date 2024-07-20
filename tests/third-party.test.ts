@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { join } from "node:path";
 import { Elysia } from "elysia";
 import { connect } from "../src";
 
@@ -84,4 +85,21 @@ describe("Connect middleware", () => {
 	// 	expect(response.status).toBe(200);
 	// 	// expect(response.headers.get("content-security-policy")).toBeString();
 	// });
+
+	it("Use createServer from vite middleware", async () => {
+		const vite = await (await import("vite")).createServer({
+			root: join(import.meta.dirname, "assets"),
+			server: {
+				middlewareMode: true,
+			},
+		});
+
+		const app = new Elysia().use(connect(vite.middlewares));
+
+		const response = await app.handle(new Request("http://localhost/"));
+
+		expect(response.status).toBe(200);
+		expect(response.headers.get("content-type")).toBe("text/html");
+		expect(await response.text()).toContain("@vite");
+	});
 });

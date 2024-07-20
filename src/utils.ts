@@ -24,7 +24,7 @@ export function transformRequestToIncomingMessage(
 		// body: request.body,
 		...options,
 	});
-	console.log(message.query, parsedURL);
+
 	return message;
 }
 

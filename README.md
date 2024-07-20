@@ -37,6 +37,7 @@ bun install elysia-connect-middleware
 -   [`cors`](https://www.npmjs.com/package/cors)
 -   [`helmet`](https://www.npmjs.com/package/helmet)
 -   [`express-rate-limit`](https://www.npmjs.com/package/express-rate-limit)
+-   [`vite#createServer`](https://vitejs.dev/guide/api-javascript.html)
 <!-- -   [`express-static`](https://www.npmjs.com/package/express-static) -->
 
 ### TODO:
