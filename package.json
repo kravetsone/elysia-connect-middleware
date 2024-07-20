@@ -10,6 +10,10 @@
             "import": "./dist/index.js"
         }
     },
+    "author": {
+        "name": "Kravets",
+        "url": "https://github.com/kravetsone"
+    },
     "description": "This plugin allows you to use express/connect middleware directly in Elysia!",
     "repository": {
         "type": "git",
