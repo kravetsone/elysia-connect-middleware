@@ -31,10 +31,15 @@ export function transformRequestToIncomingMessage(
 export function transformResponseToServerResponse(
 	serverResponse: MockResponse<ServerResponse>,
 ) {
-	return new Response(serverResponse._getData(), {
-		status: serverResponse.statusCode,
-		statusText: serverResponse.statusMessage,
-		// @ts-expect-error
-		headers: serverResponse.getHeaders(),
-	});
+	// console.log("content", serverResponse._getData(), serverResponse._getBuffer());
+
+	return new Response(
+		serverResponse._getData() || serverResponse._getBuffer(),
+		{
+			status: serverResponse.statusCode,
+			statusText: serverResponse.statusMessage,
+			// @ts-expect-error
+			headers: serverResponse.getHeaders(),
+		},
+	);
 }

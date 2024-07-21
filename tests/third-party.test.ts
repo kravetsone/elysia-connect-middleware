@@ -30,12 +30,12 @@ describe("Connect middleware", () => {
 
 		expect(response.status).toBe(200);
 		expect(response.headers.get("content-type")).toContain("markdown");
+		expect(response.headers.get("content-length")).not.toBe(0);
 	});
 	it("Use helmet() middleware", async () => {
 		const app = new Elysia().use(connect(require("helmet")()));
 
 		const response = await app.handle(new Request("http://localhost/"));
-		console.log(response);
 
 		expect(response.status).toBe(404);
 		expect(response.headers.get("content-security-policy")).toBeString();
@@ -100,6 +100,7 @@ describe("Connect middleware", () => {
 
 		expect(response.status).toBe(200);
 		expect(response.headers.get("content-type")).toBe("text/html");
+		expect(response.headers.get("content-length")).not.toBe(0);
 		expect(await response.text()).toContain("@vite");
 	});
 });
