@@ -36,14 +36,17 @@
         "@types/bun": "latest",
         "@types/cors": "^2.8.17",
         "@types/express-processimage": "^10.1.5",
+        "@types/passport-http-bearer": "^1.0.41",
         "cors": "^2.8.5",
         "express-processimage": "^11.2.0",
         "express-rate-limit": "^7.3.1",
         "express-static": "^1.2.6",
         "helmet": "^7.1.0",
+        "passport": "^0.7.0",
+        "passport-http-bearer": "^1.0.1",
         "serve-static": "^1.15.0",
-        "vite": "^5.3.4",
-        "typescript": "^5.5.3"
+        "typescript": "^5.5.3",
+        "vite": "^5.3.4"
     },
     "peerDependencies": {
         "elysia": "^1.1.3"
