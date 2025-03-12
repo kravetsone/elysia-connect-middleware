@@ -5,27 +5,33 @@ import {
 	createRequest,
 } from "node-mocks-http";
 
-export function transformRequestToIncomingMessage(
+export async function transformRequestToIncomingMessage(
 	request: Request,
 	options?: RequestOptions,
 ) {
-	const parsedURL = new URL(request.url, "http://localhost");
+    const parsedURL = new URL(request.url, "http://localhost");
 
 	const query: Record<string, unknown> = {};
-	for (const [key, value] of parsedURL.searchParams.entries()) {
-		query[key] = value;
-	}
+    for (const [key, value] of parsedURL.searchParams.entries()) {
+        query[key] = value;
+    }
 
-	const message = createRequest({
+    let body;
+    try {
+        body = await request.json();
+    } catch (error) {
+        body = null;
+    }
+
+    const message = createRequest({
 		method: request.method.toUpperCase() as "GET",
-		url: parsedURL.pathname,
+        url: parsedURL.pathname,
 		headers: request.headers.toJSON(),
-		query,
-		// body: request.body,
-		...options,
-	});
-
-	return message;
+        query,
+        body,
+        ...options
+    });
+    return message;
 }
 
 export function transformResponseToServerResponse(
@@ -33,13 +39,13 @@ export function transformResponseToServerResponse(
 ) {
 	// console.log("content", serverResponse._getData(), serverResponse._getBuffer());
 
-	return new Response(
-		serverResponse._getData() || serverResponse._getBuffer(),
-		{
-			status: serverResponse.statusCode,
-			statusText: serverResponse.statusMessage,
+    return new Response(
+        serverResponse._getData() || serverResponse._getBuffer(),
+        {
+            status: serverResponse.statusCode,
+            statusText: serverResponse.statusMessage,
 			// @ts-expect-error
 			headers: serverResponse.getHeaders(),
 		},
-	);
+    );
 }

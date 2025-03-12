@@ -37,23 +37,20 @@ describe("My own middleware", () => {
 		expect(await response.text()).toBe(EXPECTED_VALUE);
 	});
 
-	// it("Simple parse body", async () => {
-	// 	const EXPECTED_VALUE = "KRAVETSONE";
-
-	// 	const app = new Elysia().use(
-	// 		connect((req, res, next) => {
-	// 			console.log(req.body);
-	// 			res.end(req.body);
-	// 		}),
-	// 	);
-
-	// 	const response = await app.handle(
-	// 		new Request("http://localhost/", {
-	// 			body: JSON.stringify({ value: "EXPECTED_VALUE" }),
-	// 		}),
-	// 	);
-
-	// 	expect(response.status).toBe(200);
-	// 	expect(await response.json()).toBe(EXPECTED_VALUE);
-	// });
+	it("Simple parse body", async () => {
+		const EXPECTED_VALUE = "KRAVETSONE";
+		const app = new Elysia().use(
+			connect((req, res, next) => {
+				console.log(req.body);
+				res.end(req.body);
+			}),
+		);
+		const response = await app.handle(
+			new Request("http://localhost/", {
+				body: JSON.stringify({ value: "KRAVETSONE" }),
+			}),
+		);
+		expect(response.status).toBe(200);
+		expect(await response.json()).toBe(EXPECTED_VALUE);
+	});
 });
