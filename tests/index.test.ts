@@ -41,16 +41,27 @@ describe("My own middleware", () => {
 		const EXPECTED_VALUE = "KRAVETSONE";
 		const app = new Elysia().use(
 			connect((req, res, next) => {
-				console.log(req.body);
-				res.end(req.body);
+				res.end(JSON.stringify(req.body));
 			}),
 		);
 		const response = await app.handle(
 			new Request("http://localhost/", {
-				body: JSON.stringify({ value: "KRAVETSONE" }),
+				method: "POST",
+				body: JSON.stringify({ value: EXPECTED_VALUE }),
+				headers: {
+					"Content-Type": "application/json"
+				}
 			}),
 		);
 		expect(response.status).toBe(200);
-		expect(await response.json()).toBe(EXPECTED_VALUE);
+
+		let res = null;
+		try {
+			res = await response.json();
+		} catch (err) {
+			console.log('err', err);
+		}
+
+		expect(res).toEqual({ value: EXPECTED_VALUE });
 	});
 });
