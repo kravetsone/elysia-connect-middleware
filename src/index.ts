@@ -20,8 +20,8 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 		seed: middlewares,
 	}).onRequest(async function processConnectMiddlewares({ request, set }) {
 		const message = await transformRequestToIncomingMessage(request);
-		
-		return await new Promise<Response | undefined>(async (resolve) => {
+
+		return await new Promise<Response | undefined>((resolve) => {
 
 			// @ts-expect-error
 			message.app = connectApp;
@@ -30,7 +30,7 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 			const end = response.end;
 
 			// @ts-expect-error
-			response.end = async (...args: Parameters<typeof response.end>) => {
+			response.end = (...args: Parameters<typeof response.end>) => {
 				const call = end.call(response, ...args);
 				const webResponse = transformResponseToServerResponse(response);
 				resolve(webResponse);
@@ -38,7 +38,7 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 				return call;
 			};
 
-			connectApp.handle(message, response, async () => {
+			connectApp.handle(message, response, () => {
 				const webResponse = transformResponseToServerResponse(response);
 				webResponse.headers.forEach((value, key) => {
 					set.headers[key] = value;
