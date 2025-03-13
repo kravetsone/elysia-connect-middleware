@@ -19,7 +19,7 @@ export async function transformRequestToIncomingMessage(
 	let body;
 	try {
 		body = await request.json();
-	} catch (error) {
+	} catch {
 		body = null;
 	}
 
