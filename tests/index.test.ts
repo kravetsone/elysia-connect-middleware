@@ -64,4 +64,30 @@ describe("My own middleware", () => {
 
 		expect(res).toEqual({ value: EXPECTED_VALUE });
 	});
+
+	it("Handle request with no body", async () => {
+		const app = new Elysia().use(
+			connect((req, res, next) => {
+				res.end(JSON.stringify(req.body));
+			}),
+		);
+		const response = await app.handle(
+			new Request("http://localhost/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}),
+		);
+		expect(response.status).toBe(200);
+
+		let res = {};
+		try {
+			res = await response.json();
+		} catch (err) {
+			console.log('err', err);
+		}
+
+		expect(res).toEqual({});
+	});
 });
