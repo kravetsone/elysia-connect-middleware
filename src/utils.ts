@@ -16,11 +16,11 @@ export async function transformRequestToIncomingMessage(
 		query[key] = value;
 	}
 
-	let body;
+	let body: Body | undefined
 	try {
-		body = await request.json();
+		body = (await request.json()) as Body
 	} catch {
-		body = null;
+		body = undefined
 	}
 
 	const message = createRequest({
