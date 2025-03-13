@@ -19,8 +19,9 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 		name: "connect",
 		seed: middlewares,
 	}).onRequest(async function processConnectMiddlewares({ request, set }) {
+		const message = await transformRequestToIncomingMessage(request);
+		
 		return await new Promise<Response | undefined>(async (resolve) => {
-			const message = await transformRequestToIncomingMessage(request);
 
 			// @ts-expect-error
 			message.app = connectApp;
