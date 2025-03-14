@@ -90,4 +90,52 @@ describe("My own middleware", () => {
 
 		expect(res).toEqual({});
 	});
+
+	it("Calling request.json() multiple times", async () => {
+		const EXPECTED_VALUE = { value: "KRAVETSONE" };
+
+		const app = new Elysia()
+			.onBeforeHandle(({ request }) => {
+				const req1 = request.json();
+				console.log(req1);
+			})
+			.use(
+				connect(async (req, res, next) => {
+					res.end(JSON.stringify(req.body));
+				}).onBeforeHandle(({ request }) => {
+					const req2 = request.json();
+					console.log(req2);
+				}).onAfterHandle(({ request }) => {
+					const req3 = request.json();
+					console.log(req3);
+				}),
+			)
+			.onAfterHandle(({ request }) => {
+				const req4 = request.json();
+				console.log(req4);
+			})
+
+		const response = await app.handle(
+			new Request("http://localhost/", {
+				method: "POST",
+				body: JSON.stringify(EXPECTED_VALUE),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}),
+		);
+
+		expect(response.status).toBe(200);
+
+		let res = null;
+		try {
+			res = await response.json();
+		} catch (err) {
+			console.log('err', err);
+		}
+
+		expect(res).toEqual(EXPECTED_VALUE);
+	});
+
+
 });

@@ -2,6 +2,7 @@ import type { ServerResponse } from "node:http";
 import {
 	type MockResponse,
 	type RequestOptions,
+	type Body as MockBody,
 	createRequest,
 } from "node-mocks-http";
 
@@ -16,11 +17,12 @@ export async function transformRequestToIncomingMessage(
 		query[key] = value;
 	}
 
-	let body: Body | undefined
+	let body: MockBody | Body | undefined;
+
 	try {
-		body = (await request.json()) as Body
+		body = (await request.clone().json()) as MockBody;
 	} catch {
-		body = undefined
+		body = undefined;
 	}
 
 	const message = createRequest({
