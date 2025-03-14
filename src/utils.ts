@@ -2,10 +2,11 @@ import type { ServerResponse } from "node:http";
 import {
 	type MockResponse,
 	type RequestOptions,
+	type Body as MockBody,
 	createRequest,
 } from "node-mocks-http";
 
-export function transformRequestToIncomingMessage(
+export async function transformRequestToIncomingMessage(
 	request: Request,
 	options?: RequestOptions,
 ) {
@@ -16,15 +17,22 @@ export function transformRequestToIncomingMessage(
 		query[key] = value;
 	}
 
+	let body: MockBody | Body | undefined;
+
+	try {
+		body = (await request.clone().json()) as MockBody;
+	} catch {
+		body = undefined;
+	}
+
 	const message = createRequest({
 		method: request.method.toUpperCase() as "GET",
 		url: parsedURL.pathname,
 		headers: request.headers.toJSON(),
 		query,
-		// body: request.body,
-		...options,
+		body,
+		...options
 	});
-
 	return message;
 }
 
