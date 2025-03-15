@@ -44,6 +44,7 @@
         "helmet": "^8.0.0",
         "passport": "^0.7.0",
         "passport-http-bearer": "^1.0.1",
+        "pkgroll": "^2.11.2",
         "serve-static": "^1.16.2",
         "typescript": "^5.8.2",
         "vite": "^6.2.2"
