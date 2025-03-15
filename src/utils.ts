@@ -4,9 +4,22 @@ import {
 	type RequestOptions,
 	type Body as MockBody,
 	createRequest,
+	type MockRequest,
 } from "node-mocks-http";
 
+function mockAppAtRequest(message: MockRequest<any>, connectApp: any) {
+	message.app = connectApp;
+
+	message.app.get = (data: string) => {
+		console.log(data);
+		return false;
+	};
+
+	return message;
+}
+
 export async function transformRequestToIncomingMessage(
+	connectApp: any,
 	request: Request,
 	options?: RequestOptions,
 ) {
@@ -31,9 +44,10 @@ export async function transformRequestToIncomingMessage(
 		headers: request.headers.toJSON(),
 		query,
 		body,
-		...options
+		...options,
 	});
-	return message;
+
+	return mockAppAtRequest(message, connectApp);
 }
 
 export function transformResponseToServerResponse(

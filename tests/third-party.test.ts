@@ -62,29 +62,29 @@ describe("Connect middleware", () => {
 		expect(response2.headers.get("retry-after")).toBe("60");
 	});
 
-	// it("Use processImage() from express-processimage middleware", async () => {
-	// 	const ROOT = "./tests/assets";
+	it("Use processImage() from express-processimage middleware", async () => {
+		const ROOT = "./tests/assets";
 
-	// 	const app = new Elysia().use(
-	// 		connect(
-	// 			(await import("express-processimage")).default({
-	// 				root: ROOT,
-	// 			}),
-	// 			require("express-static")(ROOT),
-	// 		),
-	// 	);
+		const app = new Elysia().use(
+			connect(
+				(await import("express-processimage")).default({
+					root: ROOT,
+				}),
+				require("express-static")(ROOT),
+			),
+		);
 
-	// 	const response = await app.handle(
-	// 		new Request(
-	// 			"http://localhost/takodachi.png?resize=400,300&pngquant=128&pngcrush&setFormat=jpg",
-	// 		),
-	// 	);
+		const response = await app.handle(
+			new Request(
+				"http://localhost/takodachi.png?resize=400,300&pngquant=128&pngcrush&setFormat=jpg",
+			),
+		);
 
-	// 	console.log(response);
+		console.log(response);
 
-	// 	expect(response.status).toBe(200);
-	// 	// expect(response.headers.get("content-security-policy")).toBeString();
-	// });
+		expect(response.status).toBe(200);
+		
+	});
 
 	it("Use createServer from vite middleware", async () => {
 		const vite = await (await import("vite")).createServer({
@@ -100,7 +100,7 @@ describe("Connect middleware", () => {
 
 		expect(response.status).toBe(200);
 		expect(response.headers.get("content-type")).toBe("text/html");
-		expect(response.headers.get("content-length")).not.toBe(0);
+		expect(Number(response.headers.get("content-length"))).not.toBe(0);
 		expect(await response.text()).toContain("@vite");
 	});
 });
