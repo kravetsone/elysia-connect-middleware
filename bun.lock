@@ -20,6 +20,7 @@
         "express-static": "^1.2.6",
         "helmet": "^8.0.0",
         "passport": "^0.7.0",
+        "passport-http": "^0.3.0",
         "passport-http-bearer": "^1.0.1",
         "pkgroll": "^2.11.2",
         "serve-static": "^1.16.2",
@@ -667,6 +668,8 @@
     "passerror": ["passerror@1.1.1", "", {}, "sha512-PwrEQJBkJMxnxG+tdraz95vTstYnCRqiURNbGtg/vZHLgcAODc9hbiD5ZumGUoh3bpw0F0qKLje7Vd2Fd5Lx3g=="],
 
     "passport": ["passport@0.7.0", "", { "dependencies": { "passport-strategy": "1.x.x", "pause": "0.0.1", "utils-merge": "^1.0.1" } }, "sha512-cPLl+qZpSc+ireUvt+IzqbED1cHHkDoVYMo30jbJIdOOjQ1MQYZBPiNvmi8UM6lJuOpTPXJGZQk0DtC4y61MYQ=="],
+
+    "passport-http": ["passport-http@0.3.0", "", { "dependencies": { "passport-strategy": "1.x.x" } }, "sha512-OwK9DkqGVlJfO8oD0Bz1VDIo+ijD3c1ZbGGozIZw+joIP0U60pXY7goB+8wiDWtNqHpkTaQiJ9Ux1jE3Ykmpuw=="],
 
     "passport-http-bearer": ["passport-http-bearer@1.0.1", "", { "dependencies": { "passport-strategy": "1.x.x" } }, "sha512-SELQM+dOTuMigr9yu8Wo4Fm3ciFfkMq5h/ZQ8ffi4ELgZrX1xh9PlglqZdcUZ1upzJD/whVyt+YWF62s3U6Ipw=="],
 

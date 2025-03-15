@@ -43,6 +43,7 @@
         "express-static": "^1.2.6",
         "helmet": "^8.0.0",
         "passport": "^0.7.0",
+        "passport-http": "^0.3.0",
         "passport-http-bearer": "^1.0.1",
         "pkgroll": "^2.11.2",
         "serve-static": "^1.16.2",

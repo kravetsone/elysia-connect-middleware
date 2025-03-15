@@ -106,4 +106,37 @@ describe("Connect middleware", () => {
 		// expect(Number(response.headers.get("content-length"))).not.toBe(0);
 		expect(await response.text()).toContain("@vite");
 	});
+
+	it("Use passport middleware with basic strategy", async () => {
+		const passport = require("passport");
+		const { BasicStrategy } = require("passport-http");
+		
+		passport.use(new BasicStrategy((username: string, password: string, done: any) => {
+			if (username === "admin" && password === "secret") {
+				return done(null, { username });
+			}
+			return done(null, false);
+		}));
+
+		const app = new Elysia()
+			.use(connect(passport.initialize(), passport.authenticate("basic", { session: false })))
+			.get("/", () => "Authorized");
+
+		const unauthorizedResponse = await app.handle(new Request("http://localhost/"));
+		expect(unauthorizedResponse.status).toBe(401);
+		expect(unauthorizedResponse.headers.get("www-authenticate")).toBe('Basic realm="Users"');
+
+		const authHeader = "Basic " + Buffer.from("admin:secret").toString("base64");
+		const authorizedResponse = await app.handle(new Request("http://localhost/", {
+			headers: { "Authorization": authHeader }
+		}));
+		expect(authorizedResponse.status).toBe(200);
+
+		const invalidAuthHeader = "Basic " + Buffer.from("user:wrong").toString("base64");
+		const invalidResponse = await app.handle(new Request("http://localhost/", {
+			headers: { "Authorization": invalidAuthHeader }
+		}));
+		expect(invalidResponse.status).toBe(401);
+	});
+
 });
