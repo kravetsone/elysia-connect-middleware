@@ -43,7 +43,8 @@ bun install elysia-connect-middleware
 
 ### TODO:
 
--   Think more about body-parsing (Maybe use `app.event.parse` and ship already parsed body without `body-parser` or call `request.clone().bytes()`). This is not supported at the moment
+<!-- -   Think more about body-parsing (Maybe use `app.event.parse` and ship already parsed body without `body-parser` or call `request.clone().bytes()`). This is not supported at the moment -->
+
 -   Find more libraries for testing
 -   Clean up dependencies
 
