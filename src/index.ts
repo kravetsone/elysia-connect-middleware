@@ -1,10 +1,10 @@
 import Connect from "connect";
 import { Elysia } from "elysia";
-import { createResponse } from "node-mocks-http";
 import type { ConnectMiddleware } from "./types";
 import {
 	transformRequestToIncomingMessage,
 	transformResponseToServerResponse,
+	createResponse
 } from "./utils";
 
 export function connect(...middlewares: ConnectMiddleware[]) {
@@ -24,17 +24,7 @@ export function connect(...middlewares: ConnectMiddleware[]) {
 		return await new Promise<Response | undefined>((resolve) => {
 			
 
-			const response = createResponse();
-			const end = response.end;
-
-			// @ts-expect-error
-			response.end = (...args: Parameters<typeof response.end>) => {
-				const call = end.call(response, ...args);
-				const webResponse = transformResponseToServerResponse(response);
-				resolve(webResponse);
-
-				return call;
-			};
+			const response = createResponse(message, resolve);
 
 			connectApp.handle(message, response, () => {
 				const webResponse = transformResponseToServerResponse(response);

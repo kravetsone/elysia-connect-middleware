@@ -6,6 +6,7 @@ import {
 	createRequest,
 	type MockRequest,
 } from "node-mocks-http";
+import { createResponse as createResponseMock } from "node-mocks-http";
 
 function mockAppAtRequest(message: MockRequest<any>, connectApp: any) {
 	message.app = connectApp;
@@ -40,7 +41,10 @@ export async function transformRequestToIncomingMessage(
 
 	const message = createRequest({
 		method: request.method.toUpperCase() as "GET",
-		url: parsedURL.pathname,
+		url: parsedURL.pathname + parsedURL.search,
+		path: parsedURL.pathname,
+		originalUrl: parsedURL.pathname + parsedURL.search,
+		baseUrl: parsedURL.origin,
 		headers: request.headers.toJSON(),
 		query,
 		body,
@@ -62,6 +66,34 @@ export function transformResponseToServerResponse(
 			statusText: serverResponse.statusMessage,
 			// @ts-expect-error
 			headers: serverResponse.getHeaders(),
+			
 		},
 	);
 }
+
+
+export function createResponse(request: Express.Request, resolve: (value: Response) => void) {
+	const response = createResponseMock({
+		req: request,
+	});
+
+	// @ts-expect-error
+	if (!response._implicitHeader)
+        // @ts-expect-error
+		response._implicitHeader = () => {};
+
+		const end = response.end;
+
+		// @ts-expect-error
+		response.end = (...args: Parameters<typeof response.end>) => {
+			const call = end.call(response, ...args);
+			const webResponse = transformResponseToServerResponse(response);
+			resolve(webResponse);
+
+			return call;
+		};
+
+	return response;
+}
+
+
