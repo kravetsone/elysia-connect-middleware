@@ -11,7 +11,6 @@ function mockAppAtRequest(message: MockRequest<any>, connectApp: any) {
 	message.app = connectApp;
 
 	message.app.get = (data: string) => {
-		console.log(data);
 		return false;
 	};
 
@@ -26,6 +25,7 @@ export async function transformRequestToIncomingMessage(
 	const parsedURL = new URL(request.url, "http://localhost");
 
 	const query: Record<string, unknown> = {};
+	
 	for (const [key, value] of parsedURL.searchParams.entries()) {
 		query[key] = value;
 	}

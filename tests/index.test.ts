@@ -137,5 +137,68 @@ describe("My own middleware", () => {
 		expect(res).toEqual(EXPECTED_VALUE);
 	});
 
+	describe('Query Parameters Handling', () => {
+		it.each([
+			{
+				scenario: 'multiple parameters',
+				query: '?name=John&age=30&city=New%20York',
+				expected: { name: 'John', age: '30', city: 'New York' }
+			},
+			{
+				scenario: 'special characters',
+				query: '?search=hello%20world&encoded=%24%25%5E',
+				expected: { search: 'hello world', encoded: '$%^' }
+			},
+			{
+				scenario: 'empty values',
+				query: '?empty=&null=null',
+				expected: { empty: '', null: 'null' }
+			},
+			{
+				scenario: 'duplicate keys',
+				query: '?color=red&color=blue',
+				expected: { color: "blue" } // ['red', 'blue']
+			},
+			{
+				scenario: 'no parameters',
+				query: '',
+				expected: {}
+			}
+		])('Should handle $scenario', async ({ query, expected }) => {
+			const app = new Elysia().use(
+				connect((req, res) => {
+					res.end(JSON.stringify(req.query));
+				})
+			);
 
+			const response = await app.handle(new Request(`http://localhost/${query}`));
+			const result = await response.json();
+
+			expect(response.status).toBe(200);
+			expect(result).toEqual(expected);
+		});
+
+		it('Should handle different value types', async () => {
+			const app = new Elysia().use(
+				connect((req, res) => {
+					res.end(JSON.stringify({
+						number: Number(req.query.num),
+						boolean: req.query.flag === 'true',
+						array: typeof req.query?.ids === 'string' ? req.query?.ids?.split(',') : req.query?.ids
+					}));
+				})
+			);
+
+			const response = await app.handle(
+				new Request('http://localhost/?num=42&flag=true&ids=1,2,3')
+			);
+			const result = await response.json();
+
+			expect(result).toEqual({
+				number: 42,
+				boolean: true,
+				array: ['1', '2', '3']
+			});
+		});
+	});
 });
