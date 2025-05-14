@@ -64,7 +64,7 @@ describe("Connect middleware", () => {
 
 	// TODO: Fix this test
 	it.todo("Use processImage() from express-processimage middleware", async () => {
-		const ROOT = "./tests/assets";
+		const ROOT = join(import.meta.dirname, "assets");
 
 		const app = new Elysia().use(
 			connect(
